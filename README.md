@@ -22,8 +22,8 @@ There are cloudformation stacks that reside within this Git Repository. One of t
 ## Load Balancer check
 ![elb](https://github.com/user-attachments/assets/c42adaa7-e344-4843-9e1a-e6f87ef0a740)
 
-## Load Balancer check
-![elb](https://github.com/user-attachments/assets/2dcb9134-8b18-4822-9fd2-b29298205b09)
+## Secret Word check 
+
 
 ## TLS check 
 ![tls](https://github.com/user-attachments/assets/d9240b96-9629-4642-9e7c-bbc93a24741d)
