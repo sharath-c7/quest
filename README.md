@@ -16,14 +16,4 @@ There are cloudformation stacks that reside within this Git Repository. One of t
 ![docker1](https://github.com/user-attachments/assets/a90533e6-051d-4b76-8106-6f895ad31413)
 
 # I chose ECS Infrastructure to deploy the app.
-## Public cloud & index page
-![image](https://github.com/user-attachments/assets/cbc8e50b-53c6-4b57-8559-dce5b179a816)
-
-## Load Balancer check
-![elb](https://github.com/user-attachments/assets/c42adaa7-e344-4843-9e1a-e6f87ef0a740)
-
-## Secret Word check 
-
-
-## TLS check 
-![tls](https://github.com/user-attachments/assets/d9240b96-9629-4642-9e7c-bbc93a24741d)
+![image](https://github.com/user-attachments/assets/638c1d03-007e-46dd-9fc4-8bbbe9689773)
