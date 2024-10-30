@@ -40,4 +40,5 @@ docker run -dp 3000:3000 nodejs-server-app
 ![docker1](https://github.com/user-attachments/assets/a90533e6-051d-4b76-8106-6f895ad31413)
 
 # I chose ECS Infrastructure to deploy the app.
-![image](https://github.com/user-attachments/assets/638c1d03-007e-46dd-9fc4-8bbbe9689773)
+![image](https://github.com/user-attachments/assets/d26790b8-41a3-4994-96c7-9c1ed4be1b43)
+
