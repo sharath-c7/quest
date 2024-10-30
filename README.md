@@ -5,8 +5,8 @@ There are cloudformation stacks that reside within this Git Repository. One of t
 ## Infrastructure used Public cloud AWS
 ### Resources
 #### VPC stack to provision VPC, subnets
-#### Security groups ALB security group for allowing connections from public on ports 80 and 443, ECS service security group on port 3000 for NodeApp
-#### IAM role for ECS task and execution role, altough we donot specifically need in our scenario
+#### Security groups -> ALB security group for allowing connections from public on ports 80 and 443, ECS service security group on port 3000 for NodeApp
+#### IAM role for ECS task and execution role
 #### ECS cluster
 #### Task definition which has container attributes set like cpu, memory, os type, role, env variables, image to run
 #### Service definition file which deploys ALB, Listeners, Target Groups and registers the service against ALB
