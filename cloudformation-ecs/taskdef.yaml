@@ -1,0 +1,50 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Create a task definition for a web server.
+Parameters:
+  TaskRoleName:
+    Type: String
+    Default: ECSTask-Role
+  ExecutionRoleName:
+    Type: String
+    Default: ECSExecution-Role
+  Cpu:
+    Type: String
+    Default: 1024
+  Memory:
+    Type: String
+    Default: 2048
+  Env:
+    Type: String
+    Default: dev
+  Image:
+    Type: String
+  ContainerPort:
+    Type: String
+    Default: 3000  
+  
+Resources:
+  ECSTaskDefinition:
+    Type: 'AWS::ECS::TaskDefinition'
+    Properties:
+      ContainerDefinitions:
+        - Name: nodejs-server-app
+          Image: !Ref Image
+          Essential: true
+          PortMappings:
+            - ContainerPort: !Ref ContainerPort
+              Protocol: http
+      Cpu: !Ref Cpu
+      Memory: !Ref Memory
+      NetworkMode: awsvpc
+      RequiresCompatibilities:
+        - FARGATE
+      Tags:
+        - Key: environment
+          Value: !Ref Env
+      TaskRoleArn: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${TaskRoleName}-${AWS::AccountId}-${AWS::Region}
+      ExecutionRoleArn: !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:role/${ExecutionRoleName}-${AWS::AccountId}-${AWS::Region}
+      
+Outputs:
+  ECSTaskDefinition:
+    Description: The created Taskdefinition.
+    Value: !Ref ECSTaskDefinition        
