@@ -2,6 +2,30 @@
 
 There are cloudformation stacks that reside within this Git Repository. One of the stacks creates an ECS Cluster, IAM Role, and Application Load Balancer. The other nested stack creates the ECS Service, ECS Task Definition, ECS Security Group, and an target group.
 
+## Installation
+
+Follow next steps in order to install nodejs app and create a dockerimage
+
+### Step 1 - Git clone 
+
+```
+git clone https://github.com/sharath-c7/quest.git
+```
+
+```
+cd quest
+```
+
+### Step 2 - Build and run docker container
+
+```
+docker build -t nodejs-server-app .
+```
+
+```
+docker run -dp 3000:3000 nodejs-server-app
+```
+
 ## Infrastructure used Public cloud AWS
 ### Resources
 #### VPC stack to provision VPC, subnets
