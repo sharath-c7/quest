@@ -4,4 +4,5 @@ There are cloudformation stacks that reside within this Git Repository. One of t
 
 
 #Deploy the app in container
-![Uploading docker1.png…]()
+
+![docker1](https://github.com/user-attachments/assets/a90533e6-051d-4b76-8106-6f895ad31413)
