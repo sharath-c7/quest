@@ -26,7 +26,7 @@ docker build -t nodejs-server-app .
 docker run -dp 3000:3000 nodejs-server-app
 ```
 
-## Infrastructure used Public cloud AWS
+## Infrastructure - Public cloud AWS
 ### Resources
 #### VPC stack to provision VPC, subnets
 #### Security groups -> ALB security group for allowing connections from public on ports 80 and 443, ECS service security group on port 3000 for NodeApp
