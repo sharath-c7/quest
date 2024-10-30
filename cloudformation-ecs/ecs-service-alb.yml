@@ -1,0 +1,145 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: The template used to create an ECS Service from the ECS Console.
+Parameters:
+    ECSClusterName:
+        Type: String
+        Default: node-demo-cluster
+    ECSServiceName:
+        Type: String
+        Default: nodejs-server-service
+    ELBSecurityGroupIDs:
+        Type: CommaDelimitedList
+
+    ECSserverSecurityGroupIDs:
+        Type: CommaDelimitedList
+       
+    SubnetIDs:
+        Type: CommaDelimitedList
+
+    VpcID:
+        Type: String
+
+    LoadBalancerName:
+        Type: String
+        Default: node-js-server-alb
+    TaskDefArn:
+        Type: String
+
+    CertificateArn:
+        Type: String
+
+Resources:
+    ECSService:
+        Type: 'AWS::ECS::Service'
+        Properties:
+            Cluster: !Ref ECSClusterName
+            TaskDefinition: !Ref TaskDefArn
+            LaunchType: FARGATE
+            ServiceName: !Ref ECSServiceName
+            SchedulingStrategy: REPLICA
+            DesiredCount: 1
+            LoadBalancers:
+                - 
+                    ContainerName: nodejs-server-app
+                    ContainerPort: 3000
+                    LoadBalancerName:
+                        Ref: 'AWS::NoValue'
+                    TargetGroupArn:
+                        Ref: TargetGroup
+            HealthCheckGracePeriodSeconds: '120'
+            NetworkConfiguration:
+                AwsvpcConfiguration:
+                    AssignPublicIp: ENABLED
+                    SecurityGroups:
+                        Ref: ECSserverSecurityGroupIDs
+                    Subnets:
+                        Ref: SubnetIDs
+            PlatformVersion: LATEST
+            DeploymentConfiguration:
+                MaximumPercent: 200
+                MinimumHealthyPercent: 100
+                DeploymentCircuitBreaker:
+                    Enable: true
+                    Rollback: true
+            DeploymentController:
+                Type: ECS
+            EnableECSManagedTags: true
+        DependsOn:
+            - HTTPSListener
+    LoadBalancer:
+        Type: 'AWS::ElasticLoadBalancingV2::LoadBalancer'
+        Properties:
+            Type: application
+            Name: node-js-server-alb
+            SecurityGroups:
+                Ref: ELBSecurityGroupIDs
+            Subnets:
+                Ref: SubnetIDs
+    TargetGroup:
+        Type: 'AWS::ElasticLoadBalancingV2::TargetGroup'
+        Properties:
+            HealthCheckPath: /
+            Name: nodejs-server-tg
+            Port: 80
+            Protocol: HTTP
+            TargetType: ip
+            HealthCheckProtocol: HTTP
+            VpcId:
+                Ref: VpcID
+            TargetGroupAttributes:
+                - 
+                    Key: deregistration_delay.timeout_seconds
+                    Value: '300'
+        
+    HTTPSListener:
+        Type: AWS::ElasticLoadBalancingV2::Listener
+        Properties:
+            LoadBalancerArn: !Ref LoadBalancer
+            Port: 443
+            Protocol: HTTPS
+            DefaultActions:
+                -   Type: forward
+                    TargetGroupArn: !Ref TargetGroup
+            Certificates:
+                - CertificateArn: !Ref CertificateArn
+
+    HttpListener:
+        Type: AWS::ElasticLoadBalancingV2::Listener
+        Properties:
+            LoadBalancerArn: !Ref LoadBalancer
+            Port: 80
+            Protocol: HTTP
+            DefaultActions:
+                -   Type: redirect
+                    RedirectConfig:
+                        Host: "#{host}"
+                        Path: "/"
+                        Port: "443"
+                        Protocol: HTTPS
+                        Query: "#{query}"
+                        StatusCode: "HTTP_301"            
+Outputs:
+    ClusterName:
+        Description: The cluster used to create the service.
+        Value:
+            Ref: ECSClusterName
+    ECSService:
+        Description: The created service.
+        Value:
+            Ref: ECSService
+    LoadBalancer:
+        Description: The created load balancer.
+        Value:
+            Ref: LoadBalancer
+    HTTPSListener:
+        Description: The created listener.
+        Value:
+            Ref: HTTPSListener
+    HttpListener:
+        Description: The created listener.
+        Value:
+            Ref: HttpListener            
+    TargetGroup:
+        Description: The created target group.
+        Value:
+            Ref: TargetGroup
